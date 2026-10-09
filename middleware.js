@@ -5,7 +5,7 @@ function authMiddleware(req, res, next) {
 
     const decoded = jwt.verify(
         token,
-        "atlassiansupersecretpassword123123"
+        "secret123123"
     );
 
     const userId = decoded.userId;
