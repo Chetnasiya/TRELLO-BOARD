@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f6f7fb">
+    <title>Tandem — Team boards</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+</head>
+<body>
+    <div class="page-shell">
+        <header class="topbar">
+            <a class="brand" href="/" aria-label="Tandem home">
+                <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
+                <span>Tandem</span>
+            </a>
+            <div class="topbar-right">
+                <span class="connection"><span class="connection-dot"></span> Connected workspace</span>
+                <span id="current-user" class="user-chip" hidden></span>
+                <button id="logout-button" class="button button-quiet" type="button" hidden>Sign out</button>
+            </div>
+        </header>
+
+        <main>
+            <section id="auth-view" class="auth-layout">
+                <div class="auth-story">
+                    <span class="eyebrow">A calmer way to work together</span>
+                    <h1>Good work moves<br>better <span>in tandem.</span></h1>
+                    <p>Bring your team, boards, and next steps into one clear space.</p>
+                    <div class="story-board" aria-hidden="true">
+                        <div class="story-board-top"><span></span><span></span><span></span></div>
+                        <div class="story-columns">
+                            <div><i></i><i></i><i></i></div>
+                            <div><i></i><i></i></div>
+                            <div><i></i><i></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="auth-card">
+                    <div class="auth-card-heading">
+                        <span class="eyebrow" id="auth-eyebrow">WELCOME BACK</span>
+                        <h2 id="auth-title">Sign in to your space</h2>
+                        <p id="auth-subtitle">Pick up right where your team left off.</p>
+                    </div>
+                    <form id="auth-form" class="stack-form">
+                        <label for="auth-username">Username</label>
+                        <input id="auth-username" name="username" autocomplete="username" placeholder="Your username" required>
+                        <label for="auth-password">Password</label>
+                        <input id="auth-password" name="password" type="password" autocomplete="current-password" placeholder="At least 8 characters" required minlength="8">
+                        <p id="auth-message" class="form-message" role="status" aria-live="polite"></p>
+                        <button id="auth-submit" class="button button-primary button-wide" type="submit">Sign in</button>
+                    </form>
+                    <p class="auth-switch"><span id="auth-switch-copy">New to Tandem?</span> <button id="auth-switch" class="text-button" type="button">Create an account</button></p>
+                </div>
+            </section>
+
+            <section id="workspace-view" class="workspace-layout" hidden>
+                <aside class="sidebar">
+                    <div class="sidebar-section">
+                        <div class="section-heading">
+                            <div><span class="eyebrow">YOUR SPACE</span><h2>Organization</h2></div>
+                        </div>
+                        <div id="organization-summary" class="organization-summary empty-summary">
+                            <span class="org-avatar">T</span>
+                            <div><strong>No organization open</strong><small>Create one or join with its ID.</small></div>
+                        </div>
+                        <form id="join-form" class="compact-form">
+                            <label for="join-id">Open an organization</label>
+                            <div class="input-action">
+                                <input id="join-id" name="organizationId" placeholder="Paste organization ID" required>
+                                <button class="icon-button" type="submit" aria-label="Open organization" title="Open organization">↗</button>
+                            </div>
+                        </form>
+                        <details class="create-org">
+                            <summary><span class="plus">+</span> Create an organization</summary>
+                            <form id="organization-form" class="compact-form details-form">
+                                <label for="organization-title">Organization name</label>
+                                <input id="organization-title" name="title" placeholder="e.g. Studio North" required>
+                                <label for="organization-description">Description <span class="optional">Optional</span></label>
+                                <textarea id="organization-description" name="description" rows="2" placeholder="What is your team working on?"></textarea>
+                                <button class="button button-primary button-small" type="submit">Create organization</button>
+                            </form>
+                        </details>
+                    </div>
+
+                    <div class="sidebar-section members-section">
+                        <div class="section-heading">
+                            <div><span class="eyebrow">THE PEOPLE</span><h2>Members <span id="member-count" class="count-badge">0</span></h2></div>
+                        </div>
+                        <ul id="member-list" class="member-list">
+                            <li class="muted-list-item">Open an organization to see members.</li>
+                        </ul>
+                        <form id="member-form" class="compact-form" hidden>
+                            <label for="member-username">Invite by username</label>
+                            <div class="input-action">
+                                <input id="member-username" name="username" placeholder="teammate" required>
+                                <button class="icon-button" type="submit" aria-label="Add member" title="Add member">+</button>
+                            </div>
+                        </form>
+                        <p id="member-hint" class="side-hint">Only the organization admin can invite members.</p>
+                    </div>
+                    <div class="sidebar-footer">
+                        <span class="health-indicator"><i></i> API ready</span>
+                        <span>Built for better teamwork</span>
+                    </div>
+                </aside>
+
+                <section class="main-content">
+                    <div id="workspace-empty" class="welcome-panel">
+                        <div class="welcome-art" aria-hidden="true"><span>✓</span><span>↗</span><span>•</span></div>
+                        <span class="eyebrow">MAKE ROOM FOR MOMENTUM</span>
+                        <h1>Your team's next<br>great thing starts here.</h1>
+                        <p>Create an organization to start a shared workspace, or open one with an organization ID.</p>
+                        <button id="welcome-create" class="button button-primary" type="button">Create your organization <span>→</span></button>
+                    </div>
+
+                    <div id="board-workspace" hidden>
+                        <div class="workspace-heading">
+                            <div>
+                                <span class="eyebrow">TEAM WORKSPACE</span>
+                                <div class="title-line">
+                                    <h1 id="workspace-title">Organization</h1>
+                                    <button id="copy-org-id" class="button button-quiet button-small" type="button">Copy ID</button>
+                                </div>
+                                <p id="workspace-description" class="workspace-description"></p>
+                            </div>
+                            <button id="refresh-button" class="button button-secondary" type="button" title="Refresh workspace">↻ <span>Refresh</span></button>
+                        </div>
+
+                        <div class="boards-toolbar">
+                            <div class="board-tabs-wrap">
+                                <span class="toolbar-label">BOARDS</span>
+                                <div id="board-tabs" class="board-tabs" role="tablist" aria-label="Boards"></div>
+                            </div>
+                            <form id="board-form" class="inline-create" hidden>
+                                <input id="board-title" name="title" placeholder="New board name" aria-label="New board name" required>
+                                <button class="button button-primary button-small" type="submit">Add board</button>
+                            </form>
+                        </div>
+
+                        <div id="board-empty" class="empty-board" hidden>
+                            <div class="empty-icon">▤</div>
+                            <h2>Your first board is a blank canvas.</h2>
+                            <p>Create a board to start organizing your team's work.</p>
+                        </div>
+
+                        <div id="issue-board" hidden>
+                            <div class="issue-board-heading">
+                                <div><span class="eyebrow">BOARD</span><h2 id="selected-board-title"></h2></div>
+                                <form id="issue-form" class="inline-create">
+                                    <input id="issue-title" name="title" placeholder="What needs doing?" aria-label="Issue title" required>
+                                    <select id="issue-state" name="state" aria-label="Initial issue status">
+                                        <option value="TODO">To do</option>
+                                        <option value="IN_PROGRESS">In progress</option>
+                                        <option value="DONE">Done</option>
+                                    </select>
+                                    <button class="button button-primary button-small" type="submit">Add issue</button>
+                                </form>
+                            </div>
+                            <div id="issue-columns" class="issue-columns"></div>
+                        </div>
+                    </div>
+                    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+                </section>
+            </section>
+        </main>
+    </div>
+</body>
+</html>
