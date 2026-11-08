@@ -29,6 +29,17 @@ test("health reports when the local datastore is ready", async () => {
     });
 });
 
+test("the browser app and its assets are served by the backend", async () => {
+    const page = await fetch(`${baseUrl}/`);
+    assert.equal(page.status, 200);
+    assert.match(page.headers.get("content-type"), /text\/html/);
+    assert.match(await page.text(), /Tandem/);
+
+    const script = await fetch(`${baseUrl}/app.js`);
+    assert.equal(script.status, 200);
+    assert.match(script.headers.get("content-type"), /javascript/);
+});
+
 test("oversized JSON requests receive a payload-too-large response", async () => {
     const response = await fetch(`${baseUrl}/signup`, {
         method: "POST",

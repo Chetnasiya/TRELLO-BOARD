@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const path = require("node:path");
 const { promisify } = require("util");
 const express = require("express");
 const jwt = require("jsonwebtoken");
@@ -18,6 +19,7 @@ const scrypt = promisify(crypto.scrypt);
 const app = express();
 
 app.use(express.json({ limit: "100kb" }));
+app.use(express.static(path.join(__dirname, "public")));
 
 function isNonEmptyString(value) {
     return typeof value === "string" && value.trim().length > 0;
