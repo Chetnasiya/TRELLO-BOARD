@@ -196,6 +196,14 @@ test("users can create an organization, board, and issue using only the local da
     const { issue } = await issueResponse.json();
     assert.equal(issue.state, "TODO");
 
+    const inProgressResponse = await fetch(`${baseUrl}/issues`, {
+        method: "PUT",
+        headers,
+        body: JSON.stringify({ issueId: issue.id, state: "IN_PROGRESS" })
+    });
+    assert.equal(inProgressResponse.status, 200);
+    assert.equal((await inProgressResponse.json()).issue.state, "IN_PROGRESS");
+
     const boardsResponse = await fetch(
         `${baseUrl}/boards?organizationId=${organizationId}`,
         { headers }

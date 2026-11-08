@@ -8,6 +8,7 @@ const {
     boardModel,
     connectDatabase,
     isDatabaseConnected,
+    issueStates,
     issueModel,
     organizationModel,
     userModel
@@ -15,7 +16,6 @@ const {
 
 const scrypt = promisify(crypto.scrypt);
 const app = express();
-const issueStates = ["TODO", "IN_PROGRESS", "DONE"];
 
 app.use(express.json({ limit: "100kb" }));
 

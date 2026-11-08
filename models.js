@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const issueStates = ["TODO", "IN_PROGRESS", "DONE"];
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -71,7 +72,7 @@ const issueSchema = new mongoose.Schema({
     },
     state: {
         type: String,
-        enum: ["TODO", "IN_PROGRESS", "DONE"],
+        enum: issueStates,
         default: "TODO"
     },
     createdBy: {
@@ -370,6 +371,7 @@ function isDatabaseConnected() {
 module.exports = {
     connectDatabase,
     isDatabaseConnected,
+    issueStates,
     userModel: activeModels.User,
     organizationModel: activeModels.Organization,
     boardModel: activeModels.Board,
