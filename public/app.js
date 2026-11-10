@@ -482,8 +482,10 @@ elements["copy-org-id"].addEventListener("click", async () => {
     try {
         await navigator.clipboard.writeText(state.organizationId);
         showToast("Organization ID copied to clipboard.");
-    } catch (error) {
-        reportError(new Error("Clipboard access is unavailable. Copy the ID from the address-independent organization field."));
+    } catch {
+        elements["join-id"].focus();
+        elements["join-id"].select();
+        showToast("Clipboard access is unavailable. The organization ID is selected in the field above; copy it manually.", true);
     }
 });
 
